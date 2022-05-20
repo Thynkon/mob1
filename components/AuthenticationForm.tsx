@@ -1,7 +1,8 @@
 import { Text, TextInput, StyleSheet, View, Pressable } from "react-native";
-import { Component } from "react"
-import { config } from "../config"
-import axios from 'axios'
+import { Component } from "react";
+import { config } from "../config";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type Props = {
     username: string,
@@ -74,15 +75,23 @@ export class AuthenticationForm extends Component {
         }
 
     }
+
+    async saveToken(token: string) {
+        await AsyncStorage.setItem('auth_token', token);
+    }
+
     okPressed(username: string, password: string) {
         axios.post(config.api_url + "/me/token", {
             'username': username,
             'password': password
-        }).then(response => {
-            this.setState({message: 'User successfully authenticated!'});
+        }).then(async (response) => {
+            await this.saveToken(response.data);
+
+            this.setState({ message: 'User successfully authenticated!' });
+            this.props.navigation.navigate('dashboard');
         }).catch(err => {
             if (err.response.status === 401) {
-                this.setState({message: 'Authentication failed! Please check your credentials and try again.'});
+                this.setState({ message: 'Authentication failed! Please check your credentials and try again.' });
             }
         });
     }
