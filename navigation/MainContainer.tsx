@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator();
 export default class MainContainer extends Component {
   render() {
     return (
-      <NavigationContainer>
+      // <NavigationContainer>
         <Tab.Navigator
           initialRouteName={newsName}
           screenOptions={({ route }) => ({
@@ -50,7 +50,7 @@ export default class MainContainer extends Component {
           <Tab.Screen name={profileName} component={ProfileScreen} />
 
         </Tab.Navigator>
-      </NavigationContainer>
+      // </NavigationContainer>
     );
   }
 }
