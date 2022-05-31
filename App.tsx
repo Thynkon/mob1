@@ -5,6 +5,7 @@ import axios from 'axios';
 import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { config } from "./config";
 import MainContainer from './navigation/MainContainer';
@@ -75,15 +76,17 @@ function SignInScreen() {
   });
 
   return (
+    <SafeAreaView>
     <View style={styles.form}>
       <Text style={styles.title}>Nextep</Text>
       <Text style={[styles.error, styles.label]}>{message}</Text>
       <TextInput placeholder="Email" style={styles.input} onChangeText={(newUsername) => setUsername(newUsername)} />
       <TextInput placeholder="Password" secureTextEntry={true} style={styles.input} onChangeText={(newPassword) => setPassword(newPassword)} />
-      <Pressable style={styles.button} onPress={() => signIn(username, password)}>
+      <Pressable style={styles.button} onPress={() => signIn({ username, password })}>
         <Text style={styles.text}>Login</Text>
       </Pressable>
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -96,38 +99,38 @@ export default function App({ navigation }) {
         case 'RESTORE_TOKEN':
           return {
             ...prevState,
-            userToken: action.token,
+            authToken: action.token,
             isLoading: false,
           };
         case 'SIGN_IN':
           return {
             ...prevState,
             isSignout: false,
-            userToken: action.token,
+            authToken: action.token,
           };
         case 'SIGN_OUT':
           return {
             ...prevState,
             isSignout: true,
-            userToken: null,
+            authToken: null,
           };
       }
     },
     {
       isLoading: true,
       isSignout: false,
-      userToken: null,
+      authToken: null,
     }
   );
 
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
-      let userToken;
+      let authToken;
 
       try {
         // Restore token stored in `SecureStore` or any other encrypted storage
-        userToken = await AsyncStorage.getItem('auth-token');
+        authToken = await AsyncStorage.getItem('auth-token');
       } catch (e) {
         // Restoring token failed
       }
@@ -136,7 +139,7 @@ export default function App({ navigation }) {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      dispatch({ type: 'RESTORE_TOKEN', token: authToken });
     };
 
     bootstrapAsync();
@@ -144,24 +147,27 @@ export default function App({ navigation }) {
   const authContext = useMemo(
     () => ({
       signIn: async (data) => {
+        let authToken: string;
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
         // In the example, we'll use a dummy token
-        axios.post(config.api_url + "/me/token", {
+        axios.post(config.api_url + "/mytoken", {
           'username': data.username,
           'password': data.password
         }).then(async (response) => {
-          await AsyncStorage.setItem('auth_token', response.data);
+          authToken = response.data;
+          await AsyncStorage.setItem('auth-token', authToken);
 
           //this.setState({ message: 'User successfully authenticated!' });
         }).catch(err => {
           if (err.response.status === 401) {
-            //   this.setState({ message: 'Authentication failed! Please check your credentials and try again.' });
+            //setMessage('Authentication failed! Please check your credentials and try again.');
+            // Store message in context and display it in sign in screen
           }
+        }).finally(() => {
+          dispatch({ type: 'SIGN_IN', token: authToken });
         });
-
-        dispatch({ type: 'SIGN_IN', token: 'auth-token' });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async (data) => {
@@ -185,7 +191,7 @@ export default function App({ navigation }) {
           {state.isLoading ? (
             // We haven't finished checking for the token yet
             <Stack.Screen name="Splash" component={SplashScreen} />
-          ) : state.userToken == null ? (
+          ) : state.authToken == null ? (
             // No token found, user isn't signed in
             <Stack.Screen
               name="SignIn"

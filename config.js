@@ -1,3 +1,4 @@
 export const config = {
-    api_url: 'http://runeo.paleo.ch/api'
+    api_url: 'https://mockapi.mycpnv.ch/api/nxp',
+    img_url: 'https://mockapi.mycpnv.ch/storage/pics'
 };
