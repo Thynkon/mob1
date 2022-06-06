@@ -10,7 +10,9 @@ import { DIMENSIONS } from '../app/styles/dimensions';
 import { createStackNavigator } from '@react-navigation/stack';
 import EditProfileScreen from './screens/EditProfileScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import AddNewsScreen from './screens/AddNewsScreen';
+import AddNewsScreen from './screens/news/Add';
+import EditNewsScreen from './screens/news/Edit';
+import DetailsNewsScreen from './screens/news/Details';
 
 // import ProfileStack from '../components/Profile';
 
@@ -62,6 +64,14 @@ export function NewsStack() {
       <Stack.Screen name="AddNews" component={AddNewsScreen}
         options={({ navigation }) => ({
           title: "Add news"
+        })} />
+      <Stack.Screen name="EditNews" component={EditNewsScreen}
+        options={({ navigation }) => ({
+          title: "Edit"
+        })} />
+      <Stack.Screen name="DetailsNews" component={DetailsNewsScreen}
+        options={({ navigation }) => ({
+          title: "Details"
         })} />
     </Stack.Navigator>
   );

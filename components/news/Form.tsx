@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { DIMENSIONS } from '../app/styles/dimensions';
-import { config } from "../config";
+import { DIMENSIONS } from '../../app/styles/dimensions';
+import { config } from "../../config";
 
 import * as React from 'react';
 import { Image, Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';

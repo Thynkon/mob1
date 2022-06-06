@@ -1,4 +1,4 @@
-import NewsForm from "../../components/NewsForm";
+import NewsForm from "../../../components/news/Form";
 
 export default ({ navigation }) => {
     return (

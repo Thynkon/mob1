@@ -57,7 +57,7 @@ export default function BasicCard(props) {
             </CardContent>
             <CardActions>
                 <View style={styles.cardActions}>
-                    <Button size="small" onClick={() => { props.navigation.navigate('EditNews') }}>Learn More</Button>
+                    <Button size="small" onClick={() => { props.navigation.navigate('DetailsNews') }}>Learn More</Button>
                     <Button size="small" onClick={() => { suppress() }}>
                         <Ionicons style={[styles.icon, styles.delete]} name="trash" size={30} />
                     </Button>
