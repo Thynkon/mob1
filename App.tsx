@@ -1,16 +1,20 @@
+import { ErrorMessage } from '@hookform/error-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
-import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { DIMENSIONS } from './app/styles/dimensions';
 
 import { config } from "./config";
 import MainContainer from './navigation/MainContainer';
 
 const AuthContext = createContext('light');
+const Stack = createStackNavigator();
 
 function SplashScreen() {
   return (
@@ -20,77 +24,116 @@ function SplashScreen() {
   );
 }
 
+const styles = StyleSheet.create({
+  title: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    fontSize: DIMENSIONS.fontSize * 2,
+  },
+  label: {
+    marginTop: 20,
+    marginLeft: 5,
+  },
+  button: {
+    marginTop: 20,
+    color: 'white',
+    height: 40,
+    backgroundColor: '#ec5990',
+    borderRadius: 4,
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  container: {
+    flex: 1,
+    padding: 8,
+  },
+  input: {
+    padding: 5,
+    borderRadius: 4,
+    height: DIMENSIONS.height,
+    marginTop: 5,
+    marginRight: 5,
+    marginLeft: 5,
+    // margin: DIMENSIONS.margin,
+    backgroundColor: '#fff',
+  },
+  multiline: {
+    height: DIMENSIONS.height + 20,
+    textAlignVertical: 'top',
+  },
+  error: {
+    backgroundColor: '#ffb0b7',
+    width: '100%',
+    height: 20,
+    borderRadius: 4,
+    justifyContent: 'center',
+    padding: 5,
+    marginLeft: 5,
+    marginRight: 5
+  },
+  errorText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+});
+
 function SignInScreen() {
   const { signIn } = useContext(AuthContext);
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-
-  const DIMENSIONS = {
-    margin: 12,
-    height: 35,
-    fontSize: 15,
-  };
-
-  const styles = StyleSheet.create({
-    title: {
-      textAlign: 'center',
-      fontWeight: 'bold',
-      fontStyle: 'italic',
-      fontSize: DIMENSIONS.fontSize * 2,
-    },
-    input: {
-      height: DIMENSIONS.height,
-      margin: DIMENSIONS.margin,
-      borderWidth: 1,
-      borderRadius: 3,
-      padding: 10,
-      fontSize: DIMENSIONS.fontSize,
-      backgroundColor: '#fff',
-    },
-    label: {
-      fontSize: DIMENSIONS.fontSize,
-      margin: DIMENSIONS.margin,
-    },
-    button: {
-      margin: DIMENSIONS.margin,
-      height: DIMENSIONS.height,
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontWeight: 'bold',
-      backgroundColor: '#000',
-    },
-    form: {
-      width: '100%',
-      padding: 10,
-    },
-    text: {
-      color: 'white',
-      textTransform: 'uppercase',
-      fontWeight: 'bold',
-    },
-    message: {
-      height: DIMENSIONS.height,
+  const { register, setError, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
     }
   });
 
   return (
-    <SafeAreaView>
-    <View style={styles.form}>
-      <Text style={styles.title}>Nextep</Text>
-      <Text style={[styles.error, styles.label]}>{message}</Text>
-      <TextInput placeholder="Email" style={styles.input} onChangeText={(newUsername) => setUsername(newUsername)} />
-      <TextInput placeholder="Password" secureTextEntry={true} style={styles.input} onChangeText={(newPassword) => setPassword(newPassword)} />
-      <Pressable style={styles.button} onPress={() => signIn({ username, password })}>
-        <Text style={styles.text}>Login</Text>
-      </Pressable>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <Text style={styles.label}>Email</Text>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+            />
+          )}
+          name="email"
+          rules={{ required: true }}
+        />
+
+        <Text style={styles.label}>Password</Text>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+              secureTextEntry
+            />
+          )}
+          name="password"
+          rules={{ required: true }}
+        />
+
+        <View style={styles.button}>
+          <Button
+            style={styles.buttonInner}
+            color
+            title="Login"
+            onPress={handleSubmit(signIn)}
+          />
+        </View>
+      </View>
     </SafeAreaView>
   );
-}
-
-const Stack = createStackNavigator();
+};
 
 export default function App({ navigation }) {
   const [state, dispatch] = useReducer(
@@ -144,6 +187,7 @@ export default function App({ navigation }) {
 
     bootstrapAsync();
   }, []);
+
   const authContext = useMemo(
     () => ({
       signIn: async (data) => {
@@ -153,7 +197,7 @@ export default function App({ navigation }) {
         // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
         // In the example, we'll use a dummy token
         axios.post(config.api_url + "/mytoken", {
-          'username': data.username,
+          'username': data.email,
           'password': data.password
         }).then(async (response) => {
           authToken = response.data;
@@ -163,7 +207,7 @@ export default function App({ navigation }) {
         }).catch(err => {
           if (err.response.status === 401) {
             //setMessage('Authentication failed! Please check your credentials and try again.');
-            // Store message in context and display it in sign in screen
+            // setError("test", { type: "focus" }, { shouldFocus: true });
           }
         }).finally(() => {
           dispatch({ type: 'SIGN_IN', token: authToken });
