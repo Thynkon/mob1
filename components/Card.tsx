@@ -28,12 +28,12 @@ export default function BasicCard(props) {
     }
     return (
         <Card>
-            <Card.Title title={props.news.title} style={styles.title} />
+            <Card.Title title={props.event.title} style={styles.title} />
             <Card.Content>
-                <Paragraph>{props.news.description}</Paragraph>
+                <Paragraph>{props.event.description}</Paragraph>
             </Card.Content>
             <Card.Actions style={styles.cardActions}>
-                <Button size="small" onPress={() => { props.navigation.navigate('DetailsNews') }}>Learn More</Button>
+                <Button size="small" onPress={() => { props.navigation.navigate('DetailsEvents') }}>Learn More</Button>
                 <Button size="small" onPress={() => { suppress() }}>
                     <Ionicons style={[styles.icon, styles.delete]} name="trash" size={30} />
                 </Button>

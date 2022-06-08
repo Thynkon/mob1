@@ -14,30 +14,30 @@ export default ({ navigation }) => {
         }
     });
 
-    let news = { title: "news title", description: "news description" };
+    let event = { title: "event title", description: "event description" };
     return (
         <ScrollView>
         <View style={styles.container}>
             <View style={styles.card}>
-                <BasicCard news={news} navigation={navigation}></BasicCard>
+                <BasicCard event={event} navigation={navigation}></BasicCard>
             </View>
             <View style={styles.card}>
-                <BasicCard news={news} navigation={navigation}></BasicCard>
+                <BasicCard event={event} navigation={navigation}></BasicCard>
             </View>
             <View style={styles.card}>
-                <BasicCard news={news} navigation={navigation}></BasicCard>
+                <BasicCard event={event} navigation={navigation}></BasicCard>
             </View>
             <View style={styles.card}>
-                <BasicCard news={news} navigation={navigation}></BasicCard>
+                <BasicCard event={event} navigation={navigation}></BasicCard>
             </View>
             <View style={styles.card}>
-                <BasicCard news={news} navigation={navigation}></BasicCard>
+                <BasicCard event={event} navigation={navigation}></BasicCard>
             </View>
             <View style={styles.card}>
-                <BasicCard news={news} navigation={navigation}></BasicCard>
+                <BasicCard event={event} navigation={navigation}></BasicCard>
             </View>
             <View style={styles.card}>
-                <BasicCard news={news} navigation={navigation}></BasicCard>
+                <BasicCard event={event} navigation={navigation}></BasicCard>
             </View>
         </View>
         </ScrollView>

@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Screens
-import NewsScreen from './screens/NewsScreen';
+import EventScreen from './screens/EventScreen';
 import WalletScreen from './screens/WalletScreen';
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
@@ -10,14 +10,14 @@ import { DIMENSIONS } from '../app/styles/dimensions';
 import { createStackNavigator } from '@react-navigation/stack';
 import EditProfileScreen from './screens/EditProfileScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import AddNewsScreen from './screens/news/Add';
-import EditNewsScreen from './screens/news/Edit';
-import DetailsNewsScreen from './screens/news/Details';
+import AddEventScreen from './screens/events/Add';
+import EditEventScreen from './screens/events/Edit';
+import DetailsEventScreen from './screens/events/Details';
 
 // import ProfileStack from '../components/Profile';
 
 //Screen names
-const newsName = "News";
+const eventName = "Event";
 const walletName = "Wallet";
 const profileName = "Profile";
 
@@ -46,30 +46,30 @@ export function ProfileStack() {
   );
 }
 
-export function NewsStack() {
+export function EventStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="News" component={NewsScreen}
+      <Stack.Screen name="Event" component={EventScreen}
         options={({ navigation }) => ({
-          title: "List of news",
+          title: "List of event",
           headerStyle: {
             backgroundColor: '#DCDCDC',
           },
           headerRight: () => (
-            <Pressable style={styles.editButton} onPress={() => navigation.navigate('AddNews')}>
+            <Pressable style={styles.editButton} onPress={() => navigation.navigate('AddEvents')}>
               <Ionicons style={styles.icon} name="add" size={30} />
             </Pressable>
           ),
         })} />
-      <Stack.Screen name="AddNews" component={AddNewsScreen}
+      <Stack.Screen name="AddEvents" component={AddEventScreen}
         options={({ navigation }) => ({
           title: "Add"
         })} />
-      <Stack.Screen name="EditNews" component={EditNewsScreen}
+      <Stack.Screen name="EditEvents" component={EditEventScreen}
         options={({ navigation }) => ({
           title: "Edit"
         })} />
-      <Stack.Screen name="DetailsNews" component={DetailsNewsScreen}
+      <Stack.Screen name="DetailsEvents" component={DetailsEventScreen}
         options={({ navigation }) => ({
           title: "Details"
         })} />
@@ -192,14 +192,14 @@ export default function MainContainer() {
   return (
     // <NavigationContainer>
     <Tab.Navigator
-      initialRouteName={newsName}
+      initialRouteName={eventName}
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let rn = route.name;
 
-          if (rn === newsName) {
+          if (rn === eventName) {
             iconName = focused ? 'newspaper' : 'newspaper-outline';
           } else if (rn === walletName) {
             iconName = focused ? 'wallet' : 'wallet-outline';
@@ -224,7 +224,7 @@ export default function MainContainer() {
         ]
       })}>
 
-      <Tab.Screen name={newsName} component={NewsStack} />
+      <Tab.Screen name={eventName} component={EventStack} />
       <Tab.Screen name={walletName} component={WalletScreen} />
       <Tab.Screen name={profileName} component={ProfileStack} />
 

@@ -19,7 +19,7 @@ export default (props) => {
     });
     const onSubmit = async (data) => {
         let authToken = await AsyncStorage.getItem('auth-token');
-        axios.post(config.api_url + "/news", {
+        axios.post(config.api_url + "/events", {
             'title': data.title,
             'description': data.description,
             'subject': data.subject
