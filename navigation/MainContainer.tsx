@@ -63,7 +63,7 @@ export function NewsStack() {
         })} />
       <Stack.Screen name="AddNews" component={AddNewsScreen}
         options={({ navigation }) => ({
-          title: "Add news"
+          title: "Add"
         })} />
       <Stack.Screen name="EditNews" component={EditNewsScreen}
         options={({ navigation }) => ({

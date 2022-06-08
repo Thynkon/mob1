@@ -1,4 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import BasicCard from "../../components/Card";
 
 export default ({ navigation }) => {
@@ -15,6 +16,7 @@ export default ({ navigation }) => {
 
     let news = { title: "news title", description: "news description" };
     return (
+        <ScrollView>
         <View style={styles.container}>
             <View style={styles.card}>
                 <BasicCard news={news} navigation={navigation}></BasicCard>
@@ -22,6 +24,22 @@ export default ({ navigation }) => {
             <View style={styles.card}>
                 <BasicCard news={news} navigation={navigation}></BasicCard>
             </View>
+            <View style={styles.card}>
+                <BasicCard news={news} navigation={navigation}></BasicCard>
+            </View>
+            <View style={styles.card}>
+                <BasicCard news={news} navigation={navigation}></BasicCard>
+            </View>
+            <View style={styles.card}>
+                <BasicCard news={news} navigation={navigation}></BasicCard>
+            </View>
+            <View style={styles.card}>
+                <BasicCard news={news} navigation={navigation}></BasicCard>
+            </View>
+            <View style={styles.card}>
+                <BasicCard news={news} navigation={navigation}></BasicCard>
+            </View>
         </View>
+        </ScrollView>
     );
 }
