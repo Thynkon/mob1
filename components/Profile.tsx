@@ -1,16 +1,14 @@
-import React, { Component, useEffect } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    Image,
-} from 'react-native';
-import axios from 'axios';
-import { config } from "../config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import {
+    Image,
+    Pressable, StyleSheet,
+    Text, View} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { config } from "../config";
+import {DIMENSIONS} from '../app/styles/dimensions';
 
 export default function Profile() {
     const [username, setUsername] = useState("");
@@ -28,7 +26,6 @@ export default function Profile() {
                 "Authorization": "Bearer " + authToken,
             }
         }).then(async (response) => {
-            console.log(response);
             let user = response.data;
 
             setEmail(user.email);
@@ -71,11 +68,6 @@ export default function Profile() {
                     </View>
 
                     <View style={styles.item}>
-                        <Ionicons style={styles.icon} name="pencil" size={30} />
-                        <Text style={styles.info}>Edit</Text>
-                    </View>
-
-                    <View style={styles.item}>
                         <Ionicons style={styles.icon} name="exit" size={30} />
                         <Text style={styles.info}>Logout</Text>
                     </View>
@@ -96,6 +88,9 @@ const styles = StyleSheet.create({
         padding: 30,
         alignItems: 'center',
     },
+  editButton: {
+    marginRight: 10,
+  },
     avatar: {
         width: 130,
         height: 130,
@@ -146,5 +141,50 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginTop: 20,
         color: "#FFFFFF",
+    },
+    title: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+        fontSize: DIMENSIONS.fontSize * 2,
+    },
+    input: {
+        height: DIMENSIONS.height,
+        margin: DIMENSIONS.margin,
+        borderWidth: 1,
+        borderRadius: 3,
+        padding: 10,
+        fontSize: DIMENSIONS.fontSize,
+        backgroundColor: '#fff',
+        width: '100%',
+    },
+    label: {
+        fontSize: DIMENSIONS.fontSize,
+        margin: DIMENSIONS.margin,
+    },
+    button: {
+        margin: DIMENSIONS.margin,
+        height: DIMENSIONS.height,
+        with: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 'bold',
+        backgroundColor: '#000',
+    },
+    form: {
+        width: '80%',
+        padding: 10,
+        flex: 1,
+        flexDirection: 'column',
+        marginRight: '30%',
+    },
+    text: {
+        color: 'white',
+        textTransform: 'uppercase',
+        fontWeight: 'bold',
+        with: '100%',
+    },
+    message: {
+        height: DIMENSIONS.height,
     }
 });
