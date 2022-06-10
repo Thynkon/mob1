@@ -20,7 +20,7 @@ export default (props) => {
         },
         input: {
             padding: 5,
-            borderRadius: 4,
+            borderRadius: DIMENSIONS.inputBorderRadius,
             height: DIMENSIONS.height,
             marginTop: 10,
             marginRight: 5,

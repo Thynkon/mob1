@@ -132,8 +132,8 @@ const styles = StyleSheet.create({
         paddingRight: 5,
     },
     icon: {
-        width: 30,
-        height: 30,
+        width: DIMENSIONS.iconSize,
+        height: DIMENSIONS.iconSize,
         marginTop: 20,
         marginRight: 10
     },
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         height: DIMENSIONS.height,
         margin: DIMENSIONS.margin,
         borderWidth: 1,
-        borderRadius: 3,
+        borderRadius: DIMENSIONS.inputBorderRadius,
         padding: 10,
         fontSize: DIMENSIONS.fontSize,
         backgroundColor: '#fff',

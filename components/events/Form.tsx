@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
 
     },
     avatar: {
-        width: 130,
-        height: 130,
+        width: DIMENSIONS.avatarSize,
+        height: DIMENSIONS.avatarSize,
         borderRadius: 63,
         borderWidth: 4,
         borderColor: "white",
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         color: 'white',
         height: 40,
         backgroundColor: '#ec5990',
-        borderRadius: 4,
+        borderRadius: DIMENSIONS.inputBorderRadius,
         marginLeft: 5,
         marginRight: 5,
     },
@@ -164,12 +164,11 @@ const styles = StyleSheet.create({
     },
     input: {
         padding: 5,
-        borderRadius: 4,
+        borderRadius: DIMENSIONS.inputBorderRadius,
         height: DIMENSIONS.height,
         marginTop: 5,
         marginRight: 5,
         marginLeft: 5,
-        // margin: DIMENSIONS.margin,
         backgroundColor: '#fff',
     },
     multiline: {
@@ -180,7 +179,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffb0b7',
         width: '100%',
         height: 20,
-        borderRadius: 4,
+        borderRadius: DIMENSIONS.inputBorderRadius,
         justifyContent: 'center',
         padding: 5,
         marginLeft: 5,

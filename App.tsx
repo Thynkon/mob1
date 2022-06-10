@@ -5,7 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DIMENSIONS } from './app/styles/dimensions';
@@ -49,13 +50,11 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   input: {
-    padding: 5,
-    borderRadius: 4,
-    height: DIMENSIONS.height,
+    borderRadius: DIMENSIONS.inputBorderRadius,
+    height: DIMENSIONS.height + 5,
     marginTop: 5,
     marginRight: 5,
     marginLeft: 5,
-    // margin: DIMENSIONS.margin,
     backgroundColor: '#fff',
   },
   multiline: {
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffb0b7',
     width: '100%',
     height: 20,
-    borderRadius: 4,
+    borderRadius: DIMENSIONS.inputBorderRadius,
     justifyContent: 'center',
     padding: 5,
     marginLeft: 5,
@@ -91,12 +90,12 @@ function SignInScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        <Text style={styles.label}>Email</Text>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
+              label="Email"
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
@@ -106,12 +105,12 @@ function SignInScreen() {
           rules={{ required: true }}
         />
 
-        <Text style={styles.label}>Password</Text>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
+              label="Password"
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}

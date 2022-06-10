@@ -1,5 +1,6 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
+import { DIMENSIONS } from '../../app/styles/dimensions';
 import BasicCard from "../../components/Card";
 
 export default ({ navigation }) => {
@@ -9,8 +10,8 @@ export default ({ navigation }) => {
             padding: 8,
         },
         card: {
-            marginTop: 5,
-            marginBottom: 5,
+            marginTop: DIMENSIONS.cardMargin,
+            marginBottom: DIMENSIONS.cardMargin,
         }
     });
 
