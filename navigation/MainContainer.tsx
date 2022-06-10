@@ -2,19 +2,17 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Screens
-import EventScreen from './screens/EventScreen';
-import WalletScreen from './screens/WalletScreen';
+import EventScreen from './screens/event/Index';
+import WalletScreen from './screens/wallet/Index';
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { DIMENSIONS } from '../app/styles/dimensions';
 import { createStackNavigator } from '@react-navigation/stack';
-import EditProfileScreen from './screens/EditProfileScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import AddEventScreen from './screens/events/Add';
-import EditEventScreen from './screens/events/Edit';
-import DetailsEventScreen from './screens/events/Details';
-
-// import ProfileStack from '../components/Profile';
+import EditProfileScreen from './screens/profile/Edit';
+import ProfileScreen from './screens/profile/Details';
+import AddEventScreen from './screens/event/Add';
+import EditEventScreen from './screens/event/Edit';
+import DetailsEventScreen from './screens/event/Details';
 
 //Screen names
 const eventName = "Event";

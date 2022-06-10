@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { DIMENSIONS } from '../../app/styles/dimensions';
-import BasicCard from "../../components/Card";
+import { DIMENSIONS } from '../../../app/styles/dimensions';
+import BasicCard from "../../../components/Card";
 
 export default ({ navigation }) => {
     const styles = StyleSheet.create({
