@@ -1,7 +1,7 @@
 import ProfileForm from "../../components/ProfileForm";
 
-export default function EditProfileScreen() {
+export default function EditProfileScreen({ navigation }) {
     return (
-        <ProfileForm></ProfileForm>
+        <ProfileForm navigation={navigation}></ProfileForm>
     );
 }

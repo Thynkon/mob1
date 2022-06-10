@@ -9,7 +9,7 @@ import { Image, Text, View, StyleSheet, TextInput, Button, Alert } from 'react-n
 import { useForm, Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 
-export default () => {
+export default (props) => {
     const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
             username: '',
@@ -21,6 +21,7 @@ export default () => {
     const onSubmit = async (data) => {
         let authToken = await AsyncStorage.getItem('auth-token');
         axios.post(config.api_url + "/profile", {
+            '_method': 'PATCH',
             'username': data.username,
             'email': data.email,
             'description': data.description,
@@ -31,8 +32,7 @@ export default () => {
                 "Authorization": "Bearer " + authToken,
             }
         }).then(async (response) => {
-            console.log("SUCCESS...");
-            console.log(response);
+            props.navigation.goBack();
         }).catch(err => {
             console.log(err);
         });
@@ -53,10 +53,10 @@ export default () => {
             }
         }).then(async (response) => {
             const user = response.data;
-            console.log(user);
             reset({
                 email: user.email,
                 username: user.username,
+                walletAddress: user.wallet_address,
                 description: user.description == null ? '' : user.description,
             })
         });
