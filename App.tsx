@@ -1,13 +1,12 @@
-import { ErrorMessage } from '@hookform/error-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
-import React, { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import 'react-native-gesture-handler';
+import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DIMENSIONS } from './app/styles/dimensions';
 
@@ -55,6 +54,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginRight: 5,
     marginLeft: 5,
+    padding: 0,
     backgroundColor: '#fff',
   },
   multiline: {

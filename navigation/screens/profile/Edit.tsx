@@ -1,4 +1,4 @@
-import ProfileForm from "../../../components/ProfileForm";
+import ProfileForm from "../../../components/profile/Form";
 
 export default function EditProfileScreen({ navigation }) {
     return (

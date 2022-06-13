@@ -7,8 +7,8 @@ import {
     Text, View} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { config } from "../config";
-import {DIMENSIONS} from '../app/styles/dimensions';
+import { config } from "../../config";
+import {DIMENSIONS} from '../../app/styles/dimensions';
 
 export default function Profile() {
     const [username, setUsername] = useState("");
