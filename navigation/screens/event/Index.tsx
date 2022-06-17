@@ -1,7 +1,10 @@
-import React from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from "react-native";
 import { DIMENSIONS } from '../../../app/styles/dimensions';
 import BasicCard from "../../../components/Card";
+import { config } from "../../../config";
 
 export default ({ navigation }) => {
     const styles = StyleSheet.create({
@@ -14,33 +17,32 @@ export default ({ navigation }) => {
             marginBottom: DIMENSIONS.cardMargin,
         }
     });
+    const [events, setEvents] = useState([]);
 
-    let event = { title: "event title", description: "event description" };
+    async function fetchEvents() {
+        let authToken = await AsyncStorage.getItem('auth-token');
+        axios.get(config.api_url + "/events", {
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Authorization": "Bearer " + authToken,
+            }
+        }).then(async (response) => {
+            setEvents(response.data)
+        });
+    }
+
+    useEffect(() => {
+        fetchEvents();
+    }, []);
+
     return (
         <ScrollView>
-        <View style={styles.container}>
-            <View style={styles.card}>
-                <BasicCard event={event} navigation={navigation}></BasicCard>
+            <View style={styles.container}>
+                {events.map((event, i) =>
+                    <View key={i} style={styles.card}>
+                        <BasicCard event={event} navigation={navigation}></BasicCard>
+                    </View>)}
             </View>
-            <View style={styles.card}>
-                <BasicCard event={event} navigation={navigation}></BasicCard>
-            </View>
-            <View style={styles.card}>
-                <BasicCard event={event} navigation={navigation}></BasicCard>
-            </View>
-            <View style={styles.card}>
-                <BasicCard event={event} navigation={navigation}></BasicCard>
-            </View>
-            <View style={styles.card}>
-                <BasicCard event={event} navigation={navigation}></BasicCard>
-            </View>
-            <View style={styles.card}>
-                <BasicCard event={event} navigation={navigation}></BasicCard>
-            </View>
-            <View style={styles.card}>
-                <BasicCard event={event} navigation={navigation}></BasicCard>
-            </View>
-        </View>
         </ScrollView>
     );
 }
