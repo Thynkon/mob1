@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
-import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
+import { useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import 'react-native-gesture-handler';
@@ -11,9 +11,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { DIMENSIONS } from './app/styles/dimensions';
 
 import { config } from "./config";
+import { AuthContext } from './contexts/authContext';
+import { UserContext } from './contexts/userContext';
 import MainContainer from './navigation/MainContainer';
 
-const AuthContext = createContext('light');
 const Stack = createStackNavigator();
 
 function SplashScreen() {
@@ -165,18 +166,12 @@ export default function App({ navigation }) {
     }
   );
 
+  const [user, setUser] = useState({});
+
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
-      let authToken;
-
-      try {
-        // Restore token stored in `SecureStore` or any other encrypted storage
-        authToken = await AsyncStorage.getItem('auth-token');
-      } catch (e) {
-        // Restoring token failed
-      }
-
+      let authToken = await AsyncStorage.getItem('auth-token');
       // After restoring token, we may need to validate it in production apps
 
       // This will switch to the App screen or Auth screen and this loading
@@ -223,35 +218,37 @@ export default function App({ navigation }) {
       },
     }),
     []
-  );
+  )
 
   return (
     <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{
-          headerShown: false
-        }}>
-          {state.isLoading ? (
-            // We haven't finished checking for the token yet
-            <Stack.Screen name="Splash" component={SplashScreen} />
-          ) : state.authToken == null ? (
-            // No token found, user isn't signed in
-            <Stack.Screen
-              name="SignIn"
-              component={SignInScreen}
-              //component={AuthenticationForm}
-              options={{
-                title: 'Sign in',
-                // When logging out, a pop animation feels intuitive
-                animationTypeForReplace: state.isSignout ? 'pop' : 'push',
-              }}
-            />
-          ) : (
-            // User is signed in
-            <Stack.Screen name="Main" component={MainContainer} />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <UserContext.Provider value={{ user, setUser }}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{
+            headerShown: false
+          }}>
+            {state.isLoading ? (
+              // We haven't finished checking for the token yet
+              <Stack.Screen name="Splash" component={SplashScreen} />
+            ) : state.authToken == null ? (
+              // No token found, user isn't signed in
+              <Stack.Screen
+                name="SignIn"
+                component={SignInScreen}
+                //component={AuthenticationForm}
+                options={{
+                  title: 'Sign in',
+                  // When logging out, a pop animation feels intuitive
+                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+              />
+            ) : (
+              // User is signed in
+              <Stack.Screen name="Main" component={MainContainer} />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserContext.Provider>
     </AuthContext.Provider>
   );
 }

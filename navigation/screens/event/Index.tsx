@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from "react-native";
 import { DIMENSIONS } from '../../../app/styles/dimensions';
 import BasicCard from "../../../components/Card";
 import { config } from "../../../config";
+import { UserContext } from '../../../contexts/userContext';
 
 export default ({ navigation }) => {
     const styles = StyleSheet.create({
@@ -17,7 +18,9 @@ export default ({ navigation }) => {
             marginBottom: DIMENSIONS.cardMargin,
         }
     });
-    const [events, setEvents] = useState([]);
+
+    let [events, setEvents] = useState([]);
+    let { user, setUser } = useContext(UserContext);
 
     async function fetchEvents() {
         let authToken = await AsyncStorage.getItem('auth-token');
@@ -31,7 +34,20 @@ export default ({ navigation }) => {
         });
     }
 
+    async function fetchAuthenticatedUser() {
+        let authToken = await AsyncStorage.getItem('auth-token');
+        let r = await axios.get(config.api_url + "/profile", {
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Authorization": "Bearer " + authToken,
+            }
+        });
+
+        setUser(r.data);
+    }
+
     useEffect(() => {
+        fetchAuthenticatedUser();
         fetchEvents();
     }, []);
 

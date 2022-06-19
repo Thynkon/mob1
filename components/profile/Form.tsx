@@ -1,17 +1,17 @@
+import { ErrorMessage } from '@hookform/error-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { DIMENSIONS } from '../../app/styles/dimensions';
-import { config } from "../../config";
-
 import * as React from 'react';
-import { Image, Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
+import { useContext, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { DIMENSIONS } from '../../app/styles/dimensions'
+
+import { config } from "../../config";
+import { UserContext } from '../../contexts/userContext';
 import ImagePicker from './ImagePicker';
 
 export default (props) => {
-    let user;
     const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
             picture: '',
@@ -24,6 +24,7 @@ export default (props) => {
 
     const onSubmit = async (data) => {
         let authToken = await AsyncStorage.getItem('auth-token');
+        setUser(data);
         axios.post(config.api_url + "/profile", {
             '_method': 'PATCH',
             'username': data.username,
@@ -42,33 +43,21 @@ export default (props) => {
         });
     };
 
-    const onChange = arg => {
-        return {
-            value: arg.nativeEvent.text,
-        };
-    };
+    const { user, setUser } = useContext(UserContext);
 
-    async function handleAuth() {
-        let authToken = await AsyncStorage.getItem('auth-token');
-        axios.get(config.api_url + "/profile", {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": "Bearer " + authToken,
-            }
-        }).then(async (response) => {
-            user = response.data;
-            reset({
-                email: user.email,
-                username: user.username,
-                walletAddress: user.wallet_address,
-                description: user.description == null ? '' : user.description,
-                picture: user.picture,
-            })
-        });
+    function handleRefresh() {
+        reset({
+            email: user.email,
+            username: user.username,
+            walletAddress: user.wallet_address,
+            description: user.description == null ? '' : user.description,
+            picture: user.picture,
+        })
+
     }
 
     useEffect(() => {
-        handleAuth();
+        handleRefresh();
     }, []);
 
     return (

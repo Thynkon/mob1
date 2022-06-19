@@ -11,7 +11,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import EditProfileScreen from './screens/profile/Edit';
 import ProfileScreen from './screens/profile/Details';
 import AddEventScreen from './screens/event/Add';
-import EditEventScreen from './screens/event/Edit';
 import DetailsEventScreen from './screens/event/Details';
 
 //Screen names
@@ -62,10 +61,6 @@ export function EventStack() {
       <Stack.Screen name="AddEvents" component={AddEventScreen}
         options={({ navigation }) => ({
           title: "Add"
-        })} />
-      <Stack.Screen name="EditEvents" component={EditEventScreen}
-        options={({ navigation }) => ({
-          title: "Edit"
         })} />
       <Stack.Screen name="DetailsEvents" component={DetailsEventScreen}
         options={({ navigation }) => ({

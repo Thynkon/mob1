@@ -1,49 +1,18 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
-    Image,
-    Pressable, StyleSheet,
-    Text, View} from 'react-native';
+    Image, StyleSheet,
+    Text, View
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { DIMENSIONS } from '../../app/styles/dimensions';
 import { config } from "../../config";
-import {DIMENSIONS} from '../../app/styles/dimensions';
+import { UserContext } from '../../contexts/userContext';
 
 export default function Profile() {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [creationDate, setCreationDate] = useState("");
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
-    const [picture, setPicture] = useState("");
-    const [walletAddress, setWalletAddress] = useState("");
-
-    async function handleAuth() {
-        let authToken = await AsyncStorage.getItem('auth-token');
-        axios.get(config.api_url + "/profile", {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": "Bearer " + authToken,
-            }
-        }).then(async (response) => {
-            let user = response.data;
-
-            setEmail(user.email);
-            setUsername(user.username);
-            setFirstname(user.firstname);
-            setLastname(user.lastname);
-            setPicture(user.picture);
-
-            let date = new Date(user.creation_date);
-            setCreationDate(date.toLocaleString());
-
-            setWalletAddress(user.wallet_address);
-        });
-    }
+    let { user, setUser } = useContext(UserContext);
 
     useEffect(() => {
-        handleAuth();
     }, []);
 
     return (
@@ -51,22 +20,22 @@ export default function Profile() {
             <View>
                 <View style={styles.header}>
                     <View style={styles.headerContent}>
-                        <Image style={styles.avatar} source={{ uri: `${config.img_url}/${picture}` }} />
+                        <Image style={styles.avatar} source={{ uri: `${config.img_url}/${user?.picture}` }} />
 
-                        <Text style={styles.name}>{username}</Text>
-                        <Text style={styles.userInfo}>{email}</Text>
+                        <Text style={styles.name}>{user?.username}</Text>
+                        <Text style={styles.userInfo}>{user?.email}</Text>
                     </View>
                 </View>
 
                 <View style={styles.body}>
                     <View style={styles.item}>
                         <Ionicons style={styles.icon} name="calendar-outline" size={30} />
-                        <Text style={styles.info}>{creationDate}</Text>
+                        <Text style={styles.info}>{user?.creation_date}</Text>
                     </View>
 
                     <View style={styles.item}>
                         <Ionicons style={styles.icon} name="wallet" size={30} />
-                        <Text style={styles.info}>{walletAddress ? walletAddress : 'No wallet available'}</Text>
+                        <Text style={styles.info}>{user?.wallet_address ? user?.wallet_address : 'No wallet available'}</Text>
                     </View>
 
                     <View style={styles.item}>
@@ -90,9 +59,9 @@ const styles = StyleSheet.create({
         padding: 30,
         alignItems: 'center',
     },
-  editButton: {
-    marginRight: 10,
-  },
+    editButton: {
+        marginRight: 10,
+    },
     avatar: {
         width: 130,
         height: 130,
