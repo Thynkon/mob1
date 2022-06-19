@@ -16,6 +16,7 @@ export default function Profile() {
     const [creationDate, setCreationDate] = useState("");
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
+    const [picture, setPicture] = useState("");
     const [walletAddress, setWalletAddress] = useState("");
 
     async function handleAuth() {
@@ -32,6 +33,7 @@ export default function Profile() {
             setUsername(user.username);
             setFirstname(user.firstname);
             setLastname(user.lastname);
+            setPicture(user.picture);
 
             let date = new Date(user.creation_date);
             setCreationDate(date.toLocaleString());
@@ -49,7 +51,7 @@ export default function Profile() {
             <View>
                 <View style={styles.header}>
                     <View style={styles.headerContent}>
-                        <Image style={styles.avatar} source={{ uri: config.img_url + "/g4.png" }} />
+                        <Image style={styles.avatar} source={{ uri: `${config.img_url}/${picture}` }} />
 
                         <Text style={styles.name}>{username}</Text>
                         <Text style={styles.userInfo}>{email}</Text>

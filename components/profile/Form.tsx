@@ -8,16 +8,20 @@ import * as React from 'react';
 import { Image, Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
+import ImagePicker from './ImagePicker';
 
 export default (props) => {
+    let user;
     const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
+            picture: '',
             username: '',
             email: '',
             description: '',
             walletAddress: '',
         }
     });
+
     const onSubmit = async (data) => {
         let authToken = await AsyncStorage.getItem('auth-token');
         axios.post(config.api_url + "/profile", {
@@ -52,12 +56,13 @@ export default (props) => {
                 "Authorization": "Bearer " + authToken,
             }
         }).then(async (response) => {
-            const user = response.data;
+            user = response.data;
             reset({
                 email: user.email,
                 username: user.username,
                 walletAddress: user.wallet_address,
                 description: user.description == null ? '' : user.description,
+                picture: user.picture,
             })
         });
     }
@@ -66,12 +71,10 @@ export default (props) => {
         handleAuth();
     }, []);
 
-    console.log('errors', errors);
-
     return (
         <View style={styles.container}>
-            <Image style={styles.avatar} source={{ uri: config.img_url + "/g4.png" }} />
-            
+            <ImagePicker style={styles.avatar} source={`${config.img_url}/${user.picture}`} />
+
             <View>
                 <Text style={styles.label}>Full name</Text>
                 <ErrorMessage errors={errors} name="username" message="This is required"
