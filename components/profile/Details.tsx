@@ -30,7 +30,7 @@ export default function Profile() {
                 <View style={styles.body}>
                     <View style={styles.item}>
                         <Ionicons style={styles.icon} name="calendar-outline" size={30} />
-                        <Text style={styles.info}>{user?.creation_date}</Text>
+                        <Text style={styles.info}>{new Date(user?.creation_date).toLocaleDateString()}</Text>
                     </View>
 
                     <View style={styles.item}>

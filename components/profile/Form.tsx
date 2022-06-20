@@ -18,19 +18,27 @@ export default (props) => {
             username: '',
             email: '',
             description: '',
-            walletAddress: '',
         }
     });
 
     const onSubmit = async (data) => {
+        console.log(data);
         let authToken = await AsyncStorage.getItem('auth-token');
-        setUser(data);
+        setUser((prev) => ({
+            ...prev,
+            picture: data.picture,
+            username: data.username,
+            email: data.email,
+            description: data.description,
+
+        }));
+
         axios.post(config.api_url + "/profile", {
             '_method': 'PATCH',
             'username': data.username,
             'email': data.email,
             'description': data.description,
-            'wallet_address': data.walletAddress,
+            'wallet_address': data.wallet_address,
         }, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -49,7 +57,7 @@ export default (props) => {
         reset({
             email: user.email,
             username: user.username,
-            walletAddress: user.wallet_address,
+            wallet_address: user.wallet_address,
             description: user.description == null ? '' : user.description,
             picture: user.picture,
         })
@@ -110,7 +118,7 @@ export default (props) => {
                 />
 
                 <Text style={styles.label}>Wallet address</Text>
-                <ErrorMessage errors={errors} name="walletAddress" message="This is required"
+                <ErrorMessage errors={errors} name="wallet_address" message="This is required"
                     render={({ message }) => (
                         <View style={styles.error}>
                             <Text style={styles.errorText}>{message}</Text>
@@ -127,7 +135,7 @@ export default (props) => {
                             value={value}
                         />
                     )}
-                    name="walletAddress"
+                    name="wallet_address"
                     rules={{ required: true }}
                 />
 
