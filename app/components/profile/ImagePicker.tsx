@@ -10,8 +10,8 @@ import {
     View
 } from "react-native";
 import { Button } from "react-native-paper";
-import { config } from "../../config";
-import { UserContext } from '../../contexts/userContext.ts';
+import { config } from "../../../config";
+import { UserContext } from '../../../contexts/userContext';
 
 const CameraModule = (props) => {
     const [cameraRef, setCameraRef] = useState(null);

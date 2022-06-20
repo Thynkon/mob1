@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from "react-native";
 import { DIMENSIONS } from '../../../app/styles/dimensions';
-import BasicCard from "../../../components/Card";
+import BasicCard from "../../../app/components/Card";
 import { config } from "../../../config";
 import { UserContext } from '../../../contexts/userContext';
 import { EventsContext } from '../../../contexts/eventsContext';

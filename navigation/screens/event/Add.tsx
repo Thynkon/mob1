@@ -1,4 +1,4 @@
-import EventForm from "../../../components/events/Form";
+import EventForm from "../../../app/components/events/form/Form";
 
 export default ({ navigation }) => {
     return (

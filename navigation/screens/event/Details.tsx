@@ -1,4 +1,4 @@
-import Details from '../../../components/events/Details';
+import Details from '../../../app/components/events/details/Details';
 
 export default ({ route, navigation }) => {
     let { event } = route.params

@@ -3,8 +3,8 @@ import { Button, Card, Paragraph } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { config } from "../config";
-import { EventsContext } from '../contexts/eventsContext';
+import { config } from "../../config";
+import { EventsContext } from '../../contexts/eventsContext';
 import React, { useContext, useEffect, useState } from 'react';
 import _ from 'lodash';
 
