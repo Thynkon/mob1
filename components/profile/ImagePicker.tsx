@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Camera } from "expo-camera";
 import FormData from 'form-data';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
     Image, Modal,
     Text,
@@ -11,10 +11,12 @@ import {
 } from "react-native";
 import { Button } from "react-native-paper";
 import { config } from "../../config";
+import { UserContext } from '../../contexts/userContext.ts';
 
 const CameraModule = (props) => {
     const [cameraRef, setCameraRef] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
+    let { user, setUser } = useContext(UserContext);
 
     async function uploadPhoto() {
         if (cameraRef) {

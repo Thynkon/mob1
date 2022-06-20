@@ -1,10 +1,12 @@
-import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Card, Paragraph } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { config } from "../config";
+import { EventsContext } from '../contexts/eventsContext';
+import React, { useContext, useEffect, useState } from 'react';
+import _ from 'lodash';
 
 export default function BasicCard(props) {
     const styles = StyleSheet.create({
@@ -26,6 +28,8 @@ export default function BasicCard(props) {
         }
     });
 
+    let { events, setEvents } = useContext(EventsContext);
+
     async function suppress() {
         let authToken = await AsyncStorage.getItem('auth-token');
         axios.delete(config.api_url + `/events/${props.event.id}`, {
@@ -34,6 +38,8 @@ export default function BasicCard(props) {
                 "Authorization": "Bearer " + authToken,
             }
         }).then(async (response) => {
+            let newList  = _.filter(events, event => { return event.id !== props.event.id; })
+            setEvents(newList);
         });
     }
 

@@ -6,6 +6,7 @@ import { DIMENSIONS } from '../../../app/styles/dimensions';
 import BasicCard from "../../../components/Card";
 import { config } from "../../../config";
 import { UserContext } from '../../../contexts/userContext';
+import { EventsContext } from '../../../contexts/eventsContext';
 
 export default ({ navigation }) => {
     const styles = StyleSheet.create({
@@ -52,13 +53,15 @@ export default ({ navigation }) => {
     }, []);
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                {events.map((event, i) =>
-                    <View key={i} style={styles.card}>
-                        <BasicCard event={event} navigation={navigation}></BasicCard>
-                    </View>)}
-            </View>
-        </ScrollView>
+        <EventsContext.Provider value={{ events, setEvents }}>
+            <ScrollView>
+                <View style={styles.container}>
+                    {events.map((event, i) =>
+                        <View key={i} style={styles.card}>
+                            <BasicCard event={event} navigation={navigation}></BasicCard>
+                        </View>)}
+                </View>
+            </ScrollView>
+        </EventsContext.Provider>
     );
 }
