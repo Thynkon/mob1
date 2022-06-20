@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // Screens
 import EventScreen from './screens/event/Index';
 import WalletScreen from './screens/wallet/Index';
-import React from "react";
+import React, { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { DIMENSIONS } from '../app/styles/dimensions';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,6 +12,7 @@ import EditProfileScreen from './screens/profile/Edit';
 import ProfileScreen from './screens/profile/Details';
 import AddEventScreen from './screens/event/Add';
 import DetailsEventScreen from './screens/event/Details';
+import { EventsContext } from '../contexts/eventsContext';
 
 //Screen names
 const eventName = "Event";
@@ -44,29 +45,33 @@ export function ProfileStack() {
 }
 
 export function EventStack() {
+  let [events, setEvents] = useState([]);
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Event" component={EventScreen}
-        options={({ navigation }) => ({
-          title: "List of event",
-          headerStyle: {
-            backgroundColor: '#DCDCDC',
-          },
-          headerRight: () => (
-            <Pressable style={styles.editButton} onPress={() => navigation.navigate('AddEvents')}>
-              <Ionicons style={styles.icon} name="add" size={30} />
-            </Pressable>
-          ),
-        })} />
-      <Stack.Screen name="AddEvents" component={AddEventScreen}
-        options={({ navigation }) => ({
-          title: "Add"
-        })} />
-      <Stack.Screen name="DetailsEvents" component={DetailsEventScreen}
-        options={({ navigation }) => ({
-          title: "Details"
-        })} />
-    </Stack.Navigator>
+    <EventsContext.Provider value={{ events, setEvents }}>
+      <Stack.Navigator>
+        <Stack.Screen name="Event" component={EventScreen}
+          options={({ navigation }) => ({
+            title: "List of event",
+            headerStyle: {
+              backgroundColor: '#DCDCDC',
+            },
+            headerRight: () => (
+              <Pressable style={styles.editButton} onPress={() => navigation.navigate('AddEvents')}>
+                <Ionicons style={styles.icon} name="add" size={30} />
+              </Pressable>
+            ),
+          })} />
+        <Stack.Screen name="AddEvents" component={AddEventScreen}
+          options={({ navigation }) => ({
+            title: "Add"
+          })} />
+        <Stack.Screen name="DetailsEvents" component={DetailsEventScreen}
+          options={({ navigation }) => ({
+            title: "Details"
+          })} />
+      </Stack.Navigator>
+    </EventsContext.Provider>
   );
 }
 

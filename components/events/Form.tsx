@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { DIMENSIONS } from '../../app/styles/dimensions';
 import { config } from "../../config";
 
-import * as React from 'react';
+import React, { useContext} from 'react';
 import { Image, Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
+import { EventsContext } from '../../contexts/eventsContext';
 
 export default (props) => {
     const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
@@ -29,19 +30,14 @@ export default (props) => {
                 "Authorization": "Bearer " + authToken,
             }
         }).then(async (response) => {
-            console.log("SUCCESS...");
-            console.log(response);
+            setEvents(events => [...events, response.data],)
             props.navigation.goBack();
         }).catch(err => {
             console.log(err);
         });
     };
 
-    const onChange = arg => {
-        return {
-            value: arg.nativeEvent.text,
-        };
-    };
+    let { events, setEvents } = useContext(EventsContext);
 
     useEffect(() => {
     }, []);

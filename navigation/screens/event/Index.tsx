@@ -20,8 +20,8 @@ export default ({ navigation }) => {
         }
     });
 
-    let [events, setEvents] = useState([]);
     let { user, setUser } = useContext(UserContext);
+    let { events, setEvents } = useContext(EventsContext);
 
     async function fetchEvents() {
         let authToken = await AsyncStorage.getItem('auth-token');
@@ -53,15 +53,13 @@ export default ({ navigation }) => {
     }, []);
 
     return (
-        <EventsContext.Provider value={{ events, setEvents }}>
-            <ScrollView>
-                <View style={styles.container}>
-                    {events.map((event, i) =>
-                        <View key={i} style={styles.card}>
-                            <BasicCard event={event} navigation={navigation}></BasicCard>
-                        </View>)}
-                </View>
-            </ScrollView>
-        </EventsContext.Provider>
+        <ScrollView>
+            <View style={styles.container}>
+                {events.map((event, i) =>
+                    <View key={i} style={styles.card}>
+                        <BasicCard event={event} navigation={navigation}></BasicCard>
+                    </View>)}
+            </View>
+        </ScrollView>
     );
 }
