@@ -33,12 +33,15 @@ const CameraModule = (props) => {
 
             api.uploadPhoto(data)
                 .then(async (response) => {
-                    console.log(response);
+                    // Refresh user picture in profile page
+                    api.getCurrentUser().then(async (response) => {
+                        setUser(response.data);
+                        console.log(`Setting new user picture => ${response.data.picture}`);
+                    });
                 }).catch(err => {
                     console.log(err);
                 });
         }
-
     }
 
     return (
