@@ -14,6 +14,7 @@ import { config } from "./config";
 import { AuthContext } from './contexts/authContext';
 import { UserContext } from './contexts/userContext';
 import MainContainer from './navigation/MainContainer';
+import Api from './app/requests/Request';
 
 const Stack = createStackNavigator();
 
@@ -167,6 +168,7 @@ export default function App({ navigation }) {
   );
 
   const [user, setUser] = useState({});
+  const api = new Api();
 
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
@@ -190,7 +192,7 @@ export default function App({ navigation }) {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
         // In the example, we'll use a dummy token
-        axios.post(config.api_url + "/mytoken", {
+        api.getAuthToken({
           'username': data.email,
           'password': data.password
         }).then(async (response) => {

@@ -1,12 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from "react-native";
-import { DIMENSIONS } from '../../../app/styles/dimensions';
 import BasicCard from "../../../app/components/Card";
-import { config } from "../../../config";
-import { UserContext } from '../../../contexts/userContext';
+import { DIMENSIONS } from '../../../app/styles/dimensions';
 import { EventsContext } from '../../../contexts/eventsContext';
+import { UserContext } from '../../../contexts/userContext';
+
+import Api from '../../../app/requests/Request';
 
 export default ({ navigation }) => {
     const styles = StyleSheet.create({
@@ -21,30 +20,19 @@ export default ({ navigation }) => {
     });
 
     let { user, setUser } = useContext(UserContext);
-    let { events, setEvents } = useContext(EventsContext);
+    let { events, setEvents } = useContext(EventsContext)
+    const api = new Api();
 
     async function fetchEvents() {
-        let authToken = await AsyncStorage.getItem('auth-token');
-        axios.get(config.api_url + "/events", {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": "Bearer " + authToken,
-            }
-        }).then(async (response) => {
+       api.getEventsList().then(async (response) => {
             setEvents(response.data)
         });
     }
 
     async function fetchAuthenticatedUser() {
-        let authToken = await AsyncStorage.getItem('auth-token');
-        let r = await axios.get(config.api_url + "/profile", {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": "Bearer " + authToken,
-            }
+       api.getCurrentUser().then(async (response) => {
+            setUser(response.data);
         });
-
-        setUser(r.data);
     }
 
     useEffect(() => {

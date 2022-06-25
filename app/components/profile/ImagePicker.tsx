@@ -1,8 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import { Camera } from "expo-camera";
 import FormData from 'form-data';
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Image, Modal,
     Text,
@@ -10,18 +8,18 @@ import {
     View
 } from "react-native";
 import { Button } from "react-native-paper";
-import { config } from "../../../config";
 import { UserContext } from '../../../contexts/userContext';
+import Api from '../../requests/Request';
 
 const CameraModule = (props) => {
     const [cameraRef, setCameraRef] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
     let { user, setUser } = useContext(UserContext);
+    const api = new Api();
 
     async function uploadPhoto() {
         if (cameraRef) {
             let photo = await cameraRef.takePictureAsync();
-            let authToken = await AsyncStorage.getItem('auth-token');
             let data = new FormData();
 
             props.setImage(photo);
@@ -33,17 +31,12 @@ const CameraModule = (props) => {
                 type: 'image/jpeg',
             });
 
-            axios.post(`${config.api_url}/profile/photo`, data, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'multipart/form-data',
-                    'Authorization': `Bearer ${authToken}`,
-                },
-            }).then(async (response) => {
-                console.log(response);
-            }).catch(err => {
-                console.log(err);
-            });
+            api.uploadPhoto(data)
+                .then(async (response) => {
+                    console.log(response);
+                }).catch(err => {
+                    console.log(err);
+                });
         }
 
     }
@@ -60,7 +53,6 @@ const CameraModule = (props) => {
             <Camera
                 style={{ flex: 1 }}
                 ratio="16:9"
-                flashMode={Camera.Constants.FlashMode.on}
                 type={type}
                 ref={(ref) => {
                     setCameraRef(ref);

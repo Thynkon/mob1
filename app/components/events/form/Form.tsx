@@ -1,7 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import { useEffect } from 'react';
-import { config } from "../../../../config";
 
 import { ErrorMessage } from '@hookform/error-message';
 import React, { useContext } from 'react';
@@ -9,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Button, Text, TextInput, View } from 'react-native';
 import { EventsContext } from '../../../../contexts/eventsContext';
 
+import Api from '../../../requests/Request';
 import { styles } from './Styles';
 
 export default (props) => {
@@ -20,16 +18,10 @@ export default (props) => {
         }
     });
     const onSubmit = async (data) => {
-        let authToken = await AsyncStorage.getItem('auth-token');
-        axios.post(config.api_url + "/events", {
+        api.createEvent({
             'title': data.title,
             'description': data.description,
             'subject': data.subject
-        }, {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": "Bearer " + authToken,
-            }
         }).then(async (response) => {
             setEvents(events => [...events, response.data],)
             props.navigation.goBack();
@@ -39,6 +31,7 @@ export default (props) => {
     };
 
     let { events, setEvents } = useContext(EventsContext);
+    const api = new Api();
 
     useEffect(() => {
     }, []);
@@ -113,7 +106,6 @@ export default (props) => {
                     name="subject"
                     rules={{ required: true }}
                 />
-
 
                 <View style={styles.button}>
                     <Button

@@ -1,6 +1,4 @@
 import { ErrorMessage } from '@hookform/error-message';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import * as React from 'react';
 import { useContext, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -8,6 +6,7 @@ import { Button, Text, TextInput, View } from 'react-native';
 
 import { config } from "../../../../config";
 import { UserContext } from '../../../../contexts/userContext';
+import Api from '../../../requests/Request';
 import ImagePicker from '../ImagePicker';
 import { styles } from './Styles';
 
@@ -18,32 +17,28 @@ export default (props) => {
             username: '',
             email: '',
             description: '',
+            wallet_address: '',
         }
     });
 
     const onSubmit = async (data) => {
         console.log(data);
-        let authToken = await AsyncStorage.getItem('auth-token');
         setUser((prev) => ({
             ...prev,
             picture: data.picture,
             username: data.username,
             email: data.email,
             description: data.description,
+            wallet_address: data.wallet_address,
 
         }));
 
-        axios.post(config.api_url + "/profile", {
+        api.updateProfile({
             '_method': 'PATCH',
             'username': data.username,
             'email': data.email,
             'description': data.description,
             'wallet_address': data.wallet_address,
-        }, {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": "Bearer " + authToken,
-            }
         }).then(async (response) => {
             props.navigation.goBack();
         }).catch(err => {
@@ -52,6 +47,7 @@ export default (props) => {
     };
 
     const { user, setUser } = useContext(UserContext);
+    const api = new Api();
 
     function handleRefresh() {
         reset({
