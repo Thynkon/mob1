@@ -1,7 +1,7 @@
 # mob1
 ## Install dependencies
 ```sh
-npm install --dev
+expo install --dev
 ```
 
 ## Run project
