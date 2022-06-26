@@ -25,7 +25,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "ch.cpnv.mob1"
     },
     "web": {
       "favicon": "./assets/favicon.png"
